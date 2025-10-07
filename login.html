@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - St. Peter's Aterait Secondary School</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --maroon: #800000;
+            --cream-yellow: #FFFDD0;
+            --gold: #D4AF37;
+            --dark-slate: #2F4F4F;
+            --light-gray: #f8f9fa;
+            --white: #ffffff;
+            
+            /* Light theme variables */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #333333;
+            --text-secondary: #555555;
+            --card-bg: #ffffff;
+            --header-bg: linear-gradient(135deg, var(--maroon) 0%, #600000 100%);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --card-bg: #2d2d2d;
+            --header-bg: linear-gradient(135deg, #600000 0%, #400000 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--maroon) 0%, #600000 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .login-container {
+            display: flex;
+            max-width: 1000px;
+            width: 100%;
+            background: var(--bg-primary);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            min-height: 600px;
+        }
+
+        /* Login Side */
+        .login-side {
+            flex: 1;
+            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            color: var(--maroon);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-home:hover {
+            color: var(--gold);
+            transform: translateX(-5px);
+        }
+
+        .back-home i {
+            margin-right: 0.5rem;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h1 {
+            color: var(--maroon);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Tab Navigation */
+        .login-tabs {
+            display: flex;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn.active {
+            background: var(--maroon);
+            color: var(--white);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(128, 0, 0, 0.1);
+            color: var(--maroon);
+        }
+
+        /* Login Form */
+        .login-form {
+            display: none;
+        }
+
+        .login-form.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid #e1e1e1;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--maroon);
+            box-shadow: 0 0 0 3px rgba(128, 0, 0, 0.1);
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .input-group input:focus + i {
+            color: var(--maroon);
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .remember-me input {
+            width: auto;
+        }
+
+        .forgot-password {
+            color: var(--maroon);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password:hover {
+            color: var(--gold);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 1rem;
+            background: var(--maroon);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .login-button:hover {
+            background: #600000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(128, 0, 0, 0.3);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        /* Divider */
+        .divider {
+            text-align: center;
+            margin: 2rem 0;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e1e1e1;
+        }
+
+        .divider span {
+            background: var(--bg-primary);
+            padding: 0 1rem;
+            position: relative;
+        }
+
+        /* Quick Links */
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .quick-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.8rem;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .quick-link:hover {
+            border-color: var(--maroon);
+            color: var(--maroon);
+            transform: translateY(-2px);
+        }
+
+        /* Welcome Side */
+        .welcome-side {
+            flex: 1;
+            background: linear-gradient(135deg, var(--maroon) 0%, #600000 100%);
+            color: var(--white);
+            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-side::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://i.imgur.com/4Mm6LVE.jpeg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 2;
+            max-width: 400px;
+        }
+
+        .school-logo {
+            font-size: 4rem;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+        }
+
+        .welcome-content h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--gold);
+        }
+
+        .welcome-content p {
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .features {
+            text-align: left;
+            margin-top: 2rem;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .feature i {
+            color: var(--gold);
+            font-size: 1.2rem;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--white);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            z-index: 3;
+        }
+
+        .theme-toggle:hover {
+            background: var(--gold);
+            color: var(--dark-slate);
+            transform: scale(1.1);
+        }
+
+        .theme-toggle .fa-sun {
+            display: none;
+        }
+
+        [data-theme="dark"] .theme-toggle .fa-moon {
+            display: none;
+        }
+
+        [data-theme="dark"] .theme-toggle .fa-sun {
+            display: block;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+                max-width: 500px;
+            }
+
+            .welcome-side {
+                order: -1;
+                padding: 2rem 1.5rem;
+            }
+
+            .login-side {
+                padding: 2rem 1.5rem;
+            }
+
+            .welcome-content h2 {
+                font-size: 1.5rem;
+            }
+
+            .school-logo {
+                font-size: 3rem;
+            }
+
+            .theme-toggle {
+                top: 1rem;
+                right: 1rem;
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0.5rem;
+            }
+
+            .login-container {
+                border-radius: 15px;
+            }
+
+            .welcome-side,
+            .login-side {
+                padding: 1.5rem 1rem;
+            }
+
+            .login-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .tab-btn {
+                padding: 0.8rem;
+                font-size: 0.9rem;
+            }
+
+            .input-group input {
+                padding: 0.8rem 0.8rem 0.8rem 2.5rem;
+            }
+
+            .input-group i {
+                left: 0.8rem;
+            }
+
+            .quick-links {
+                grid-template-columns: 1fr;
+            }
+
+            .form-options {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+        }
+
+        .loading.active {
+            display: inline-block;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Error/Success Messages */
+        .message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+            display: none;
+        }
+
+        .message.error {
+            background: #ffe6e6;
+            color: #d63031;
+            border: 1px solid #ff7675;
+        }
+
+        .message.success {
+            background: #e6f7e6;
+            color: #27ae60;
+            border: 1px solid #58d68d;
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <div class="login-container">
+        <!-- Login Side -->
+        <div class="login-side">
+            <a href="index.html" class="back-home">
+                <i class="fas fa-arrow-left"></i>
+                Back to Home
+            </a>
+
+            <div class="login-header">
+                <h1>Welcome Back</h1>
+                <p>Sign in to access your account</p>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="login-tabs">
+                <button class="tab-btn active" data-tab="staff">
+                    <i class="fas fa-user-tie"></i>
+                    Staff Login
+                </button>
+                <button class="tab-btn" data-tab="student">
+                    <i class="fas fa-user-graduate"></i>
+                    Student Login
+                </button>
+            </div>
+
+            <!-- Messages -->
+            <div class="message error" id="errorMessage"></div>
+            <div class="message success" id="successMessage"></div>
+
+            <!-- Staff Login Form -->
+            <form class="login-form active" id="staffForm">
+                <div class="form-group">
+                    <label for="staffEmail">Email Address</label>
+                    <div class="input-group">
+                        <input type="email" id="staffEmail" placeholder="Enter your email" required>
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="staffPassword">Password</label>
+                    <div class="input-group">
+                        <input type="password" id="staffPassword" placeholder="Enter your password" required>
+                        <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="staffRemember">
+                        Remember me
+                    </label>
+                    <a href="#forgot" class="forgot-password">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="login-button">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Sign In as Staff
+                    <i class="fas fa-spinner loading"></i>
+                </button>
+            </form>
+
+            <!-- Student Login Form -->
+            <form class="login-form" id="studentForm">
+                <div class="form-group">
+                    <label for="studentAdmission">Admission Number</label>
+                    <div class="input-group">
+                        <input type="text" id="studentAdmission" placeholder="Enter admission number" required>
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="studentPassword">Password</label>
+                    <div class="input-group">
+                        <input type="password" id="studentPassword" placeholder="Enter your password" required>
+                        <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="studentRemember">
+                        Remember me
+                    </label>
+                    <a href="#forgot" class="forgot-password">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="login-button">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Sign In as Student
+                    <i class="fas fa-spinner loading"></i>
+                </button>
+            </form>
+
+            <div class="divider">
+                <span>Quick Access</span>
+            </div>
+
+            <div class="quick-links">
+                <a href="#parent-portal" class="quick-link">
+                    <i class="fas fa-users"></i>
+                    Parent Portal
+                </a>
+                <a href="#results" class="quick-link">
+                    <i class="fas fa-chart-bar"></i>
+                    Check Results
+                </a>
+                <a href="#timetable" class="quick-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    Timetable
+                </a>
+                <a href="#support" class="quick-link">
+                    <i class="fas fa-headset"></i>
+                    Support
+                </a>
+            </div>
+        </div>
+
+        <!-- Welcome Side -->
+        <div class="welcome-side">
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <i class="fas fa-moon"></i>
+                <i class="fas fa-sun"></i>
+            </button>
+
+            <div class="welcome-content">
+                <div class="school-logo">
+                    <i class="fas fa-school"></i>
+                </div>
+                
+                <h2>St. Peter's Aterait</h2>
+                <p>"Excellence is Our Pride" - Access your educational resources and manage your academic journey with ease.</p>
+
+                <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Secure & Private</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-bolt"></i>
+                        <span>Fast & Reliable</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Mobile Friendly</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-clock"></i>
+                        <span>24/7 Access</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+
+        // Set initial theme
+        document.body.setAttribute('data-theme', currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            document.body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Tab Switching
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const loginForms = document.querySelectorAll('.login-form');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTab = button.getAttribute('data-tab');
+                
+                // Update active tab
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                // Show corresponding form
+                loginForms.forEach(form => {
+                    form.classList.remove('active');
+                    if (form.id === `${targetTab}Form`) {
+                        form.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        // Form Submission
+        const staffForm = document.getElementById('staffForm');
+        const studentForm = document.getElementById('studentForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+
+        function showMessage(element, message, type) {
+            element.textContent = message;
+            element.className = `message ${type}`;
+            element.style.display = 'block';
+            
+            // Hide other message
+            if (type === 'error') {
+                successMessage.style.display = 'none';
+            } else {
+                errorMessage.style.display = 'none';
+            }
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 5000);
+        }
+
+        function simulateLogin(form, type) {
+            const submitButton = form.querySelector('.login-button');
+            const spinner = submitButton.querySelector('.loading');
+            
+            // Show loading
+            submitButton.disabled = true;
+            spinner.classList.add('active');
+            
+            // Simulate API call
+            setTimeout(() => {
+                spinner.classList.remove('active');
+                submitButton.disabled = false;
+                
+                // For demo purposes - always show success
+                // In real implementation, you'd validate credentials
+                showMessage(successMessage, `Successfully logged in as ${type}! Redirecting...`, 'success');
+                
+                // Redirect after success (demo)
+                setTimeout(() => {
+                    if (type === 'staff') {
+                        window.location.href = 'staff-dashboard.html';
+                    } else {
+                        window.location.href = 'student-portal.html';
+                    }
+                }, 2000);
+                
+            }, 2000);
+        }
+
+        staffForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('staffEmail').value;
+            const password = document.getElementById('staffPassword').value;
+            
+            // Basic validation
+            if (!email || !password) {
+                showMessage(errorMessage, 'Please fill in all fields', 'error');
+                return;
+            }
+            
+            simulateLogin(staffForm, 'staff');
+        });
+
+        studentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const admission = document.getElementById('studentAdmission').value;
+            const password = document.getElementById('studentPassword').value;
+            
+            // Basic validation
+            if (!admission || !password) {
+                showMessage(errorMessage, 'Please fill in all fields', 'error');
+                return;
+            }
+            
+            simulateLogin(studentForm, 'student');
+        });
+
+        // Forgot Password
+        document.querySelectorAll('.forgot-password').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                showMessage(successMessage, 'Password reset instructions have been sent to your email!', 'success');
+            });
+        });
+
+        // Quick Links
+        document.querySelectorAll('.quick-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const linkText = link.textContent.trim();
+                showMessage(successMessage, `${linkText} feature coming soon!`, 'success');
+            });
+        });
+
+        // Auto-focus first input on tab switch
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTab = button.getAttribute('data-tab');
+                const form = document.getElementById(`${targetTab}Form`);
+                const firstInput = form.querySelector('input');
+                if (firstInput) {
+                    firstInput.focus();
+                }
+            });
+        });
+        // Add this to the existing JavaScript in login.html
+// Handle URL parameters for auto-tab selection
+function getUrlParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
+// Auto-select tab based on URL parameter
+window.addEventListener('load', () => {
+    const userType = getUrlParameter('user');
+    if (userType === 'staff' || userType === 'student') {
+        const targetTab = document.querySelector(`[data-tab="${userType}"]`);
+        if (targetTab) {
+            targetTab.click();
+        }
+    }
+});
+    </script>
+</body>
+</html>

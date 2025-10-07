@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal - St. Peter's Aterait Secondary School</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --maroon: #800000;
+            --cream-yellow: #FFFDD0;
+            --gold: #D4AF37;
+            --dark-slate: #2F4F4F;
+            --light-gray: #f8f9fa;
+            --white: #ffffff;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #17a2b8;
+            
+            /* Light theme variables */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #333333;
+            --text-secondary: #555555;
+            --card-bg: #ffffff;
+            --sidebar-bg: #2c3e50;
+            --header-bg: linear-gradient(135deg, var(--maroon) 0%, #600000 100%);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --card-bg: #2d2d2d;
+            --sidebar-bg: #1a252f;
+            --header-bg: linear-gradient(135deg, #600000 0%, #400000 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-secondary);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            color: var(--white);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            left: 0;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem 1rem;
+            background: rgba(0,0,0,0.2);
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .school-logo {
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-header p {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .student-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            margin: 1rem;
+            border-radius: 10px;
+        }
+
+        .student-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--dark-slate);
+            font-size: 1.2rem;
+        }
+
+        .student-info h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .student-info p {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .sidebar-menu {
+            padding: 1rem 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .menu-item:hover {
+            background: rgba(255,255,255,0.1);
+            border-left-color: var(--gold);
+        }
+
+        .menu-item.active {
+            background: rgba(255,255,255,0.15);
+            border-left-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .menu-item i {
+            width: 20px;
+            margin-right: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .menu-badge {
+            margin-left: auto;
+            background: var(--gold);
+            color: var(--dark-slate);
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            transition: margin-left 0.3s ease;
+            min-height: 100vh;
+        }
+
+        /* Top Header */
+        .top-header {
+            background: var(--header-bg);
+            color: var(--white);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .header-left h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .header-left p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle, .mobile-menu-btn {
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--white);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover, .mobile-menu-btn:hover {
+            background: var(--gold);
+            color: var(--dark-slate);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+        }
+
+        /* Dashboard Content */
+        .dashboard-content {
+            padding: 2rem;
+        }
+
+        /* Welcome Banner */
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--maroon) 0%, #600000 100%);
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .welcome-text h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--gold);
+        }
+
+        .welcome-text p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        .academic-info {
+            display: flex;
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .academic-item h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .academic-item p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--white);
+        }
+
+        .stat-icon.assignments { background: var(--info); }
+        .stat-icon.grades { background: var(--success); }
+        .stat-icon.attendance { background: var(--warning); }
+        .stat-icon.timetable { background: var(--danger); }
+
+        .stat-info h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .stat-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Quick Access */
+        .quick-access {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--maroon);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .action-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .action-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--maroon);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .action-icon {
+            font-size: 2.5rem;
+            color: var(--maroon);
+            margin-bottom: 1rem;
+        }
+
+        .action-card h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-card p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        /* Dashboard Layout */
+        .dashboard-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-col {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Recent Assignments */
+        .recent-assignments {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .assignments-list {
+            list-style: none;
+        }
+
+        .assignment-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .assignment-item:last-child {
+            border-bottom: none;
+        }
+
+        .assignment-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: var(--maroon);
+        }
+
+        .assignment-content {
+            flex: 1;
+        }
+
+        .assignment-content h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .assignment-content p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .assignment-meta {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .assignment-due {
+            color: var(--danger);
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .assignment-status {
+            padding: 0.2rem 0.5rem;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-submitted { background: #d1ecf1; color: #0c5460; }
+        .status-graded { background: #d4edda; color: #155724; }
+
+        /* Today's Timetable */
+        .timetable-widget {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .timetable-list {
+            list-style: none;
+        }
+
+        .timetable-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .timetable-item:last-child {
+            border-bottom: none;
+        }
+
+        .time-slot {
+            width: 80px;
+            font-weight: 600;
+            color: var(--maroon);
+            font-size: 0.9rem;
+        }
+
+        .subject-info {
+            flex: 1;
+        }
+
+        .subject-info h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .subject-info p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .room-number {
+            background: var(--bg-secondary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Performance Chart */
+        .performance-widget {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .performance-bars {
+            display: flex;
+            align-items: end;
+            gap: 1rem;
+            height: 200px;
+            margin-top: 1rem;
+        }
+
+        .performance-bar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .bar-container {
+            width: 100%;
+            height: 150px;
+            background: var(--bg-secondary);
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--maroon);
+            border-radius: 5px 5px 0 0;
+            transition: height 1s ease;
+        }
+
+        .subject-name {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .subject-grade {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 0.2rem;
+        }
+
+        /* Overlay for mobile */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* Theme Toggle States */
+        .theme-toggle .fa-sun {
+            display: none;
+        }
+
+        [data-theme="dark"] .theme-toggle .fa-moon {
+            display: none;
+        }
+
+        [data-theme="dark"] .theme-toggle .fa-sun {
+            display: block;
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        
+        /* Large Tablets */
+        @media (max-width: 1024px) {
+            .dashboard-row {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .sidebar {
+                width: 250px;
+            }
+            
+            .main-content {
+                margin-left: 250px;
+            }
+            
+            .welcome-banner {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+            
+            .academic-info {
+                justify-content: center;
+            }
+        }
+
+        /* Tablets */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 280px;
+                left: -280px;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .top-header {
+                padding: 1rem;
+            }
+
+            .dashboard-content {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .actions-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.8rem;
+            }
+            
+            .header-left h1 {
+                font-size: 1.3rem;
+            }
+            
+            .header-left p {
+                font-size: 0.8rem;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .welcome-text h2 {
+                font-size: 1.5rem;
+            }
+            
+            .academic-info {
+                gap: 1rem;
+            }
+            
+            .academic-item h3 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Mobile Phones */
+        @media (max-width: 480px) {
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-left h1 {
+                font-size: 1.2rem;
+            }
+
+            .stat-card {
+                padding: 1rem;
+                flex-direction: column;
+                text-align: center;
+                gap: 0.8rem;
+            }
+
+            .stat-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .stat-info h3 {
+                font-size: 1.5rem;
+            }
+
+            .assignment-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+                padding: 1rem 0;
+            }
+
+            .assignment-icon {
+                margin-right: 0;
+            }
+
+            .assignment-meta {
+                align-self: stretch;
+                justify-content: space-between;
+            }
+            
+            .timetable-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .time-slot {
+                width: auto;
+            }
+            
+            .performance-bars {
+                gap: 0.5rem;
+                height: 150px;
+            }
+            
+            .bar-container {
+                height: 100px;
+            }
+            
+            .subject-name {
+                font-size: 0.7rem;
+            }
+
+            .theme-toggle, .mobile-menu-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+            
+            .student-profile {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.8rem;
+            }
+        }
+
+        /* Small Mobile Phones */
+        @media (max-width: 360px) {
+            .dashboard-content {
+                padding: 0.8rem;
+            }
+            
+            .top-header {
+                padding: 0.8rem;
+            }
+            
+            .stat-card {
+                padding: 0.8rem;
+            }
+            
+            .action-card {
+                padding: 1rem;
+            }
+            
+            .recent-assignments,
+            .timetable-widget,
+            .performance-widget {
+                padding: 1rem;
+            }
+            
+            .menu-item {
+                padding: 0.7rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .sidebar-header {
+                padding: 1rem 0.8rem;
+            }
+            
+            .school-logo {
+                font-size: 2rem;
+            }
+            
+            .welcome-banner {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Landscape Mode */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .sidebar {
+                overflow-y: auto;
+            }
+            
+            .sidebar-header {
+                padding: 1rem;
+            }
+            
+            .menu-item {
+                padding: 0.6rem 1rem;
+            }
+            
+            .dashboard-content {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <!-- Overlay for mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="school-logo">
+                <i class="fas fa-school"></i>
+            </div>
+            <h2>St. Peter's Aterait</h2>
+            <p>Student Portal</p>
+        </div>
+
+        <div class="student-profile">
+            <div class="student-avatar">SM</div>
+            <div class="student-info">
+                <h4>Sarah Mwangi</h4>
+                <p>Form 3 West • Admission: SPAS001</p>
+            </div>
+        </div>
+
+        <div class="sidebar-menu">
+            <a href="#" class="menu-item active">
+                <i class="fas fa-home"></i>
+                Dashboard
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-tasks"></i>
+                Assignments
+                <span class="menu-badge">3</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-chart-bar"></i>
+                Results & Grades
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-calendar-alt"></i>
+                Timetable
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-clipboard-check"></i>
+                Attendance
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-book"></i>
+                Study Materials
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-bell"></i>
+                Notifications
+                <span class="menu-badge">5</span>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-user"></i>
+                Profile
+            </a>
+            <a href="index.html" class="menu-item">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Header -->
+        <div class="top-header">
+            <div class="header-left">
+                <h1>Student Portal</h1>
+                <p>Welcome to your learning dashboard</p>
+            </div>
+
+            <div class="header-right">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                    <i class="fas fa-sun"></i>
+                </button>
+                
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+            <!-- Welcome Banner -->
+            <div class="welcome-banner">
+                <div class="welcome-text">
+                    <h2>Welcome back, Sarah! 🎓</h2>
+                    <p>You have 3 pending assignments and 2 new announcements</p>
+                </div>
+                <div class="academic-info">
+                    <div class="academic-item">
+                        <h3>3.8</h3>
+                        <p>GPA</p>
+                    </div>
+                    <div class="academic-item">
+                        <h3>95%</h3>
+                        <p>Attendance</p>
+                    </div>
+                    <div class="academic-item">
+                        <h3>12</h3>
+                        <p>Subjects</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon assignments">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>3</h3>
+                        <p>Pending Assignments</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon grades">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>B+</h3>
+                        <p>Current Average</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon attendance">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>95%</h3>
+                        <p>Attendance Rate</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon timetable">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>6</h3>
+                        <p>Classes Today</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Access -->
+            <div class="quick-access">
+                <h2 class="section-title">
+                    <i class="fas fa-bolt"></i>
+                    Quick Access
+                </h2>
+                <div class="actions-grid">
+                    <div class="action-card">
+                        <div class="action-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <h3>View Assignments</h3>
+                        <p>Check pending work</p>
+                    </div>
+                    <div class="action-card">
+                        <div class="action-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h3>Check Results</h3>
+                        <p>View your grades</p>
+                    </div>
+                    <div class="action-card">
+                        <div class="action-icon">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <h3>Today's Schedule</h3>
+                        <p>View timetable</p>
+                    </div>
+                    <div class="action-card">
+                        <div class="action-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3>Study Materials</h3>
+                        <p>Access resources</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Chart -->
+            <div class="performance-widget">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-line"></i>
+                    Subject Performance
+                </h2>
+                <div class="performance-bars">
+                    <div class="performance-bar">
+                        <div class="bar-container">
+                            <div class="bar-fill" style="height: 85%"></div>
+                        </div>
+                        <div class="subject-name">Math</div>
+                        <div class="subject-grade">A-</div>
+                    </div>
+                    <div class="performance-bar">
+                        <div class="bar-container">
+                            <div class="bar-fill" style="height: 78%"></div>
+                        </div>
+                        <div class="subject-name">English</div>
+                        <div class="subject-grade">B+</div>
+                    </div>
+                    <div class="performance-bar">
+                        <div class="bar-container">
+                            <div class="bar-fill" style="height: 92%"></div>
+                        </div>
+                        <div class="subject-name">Physics</div>
+                        <div class="subject-grade">A</div>
+                    </div>
+                    <div class="performance-bar">
+                        <div class="bar-container">
+                            <div class="bar-fill" style="height: 70%"></div>
+                        </div>
+                        <div class="subject-name">Chemistry</div>
+                        <div class="subject-grade">B</div>
+                    </div>
+                    <div class="performance-bar">
+                        <div class="bar-container">
+                            <div class="bar-fill" style="height: 88%"></div>
+                        </div>
+                        <div class="subject-name">Biology</div>
+                        <div class="subject-grade">A-</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-row">
+                <div class="dashboard-col">
+                    <!-- Recent Assignments -->
+                    <div class="recent-assignments">
+                        <h2 class="section-title">
+                            <i class="fas fa-tasks"></i>
+                            Recent Assignments
+                        </h2>
+                        <ul class="assignments-list">
+                            <li class="assignment-item">
+                                <div class="assignment-icon">
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                                <div class="assignment-content">
+                                    <h4>Mathematics Problem Set</h4>
+                                    <p>Algebra and Quadratic Equations</p>
+                                    <div class="assignment-meta">
+                                        <div class="assignment-due">Due: Tomorrow</div>
+                                        <div class="assignment-status status-pending">Pending</div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="assignment-item">
+                                <div class="assignment-icon">
+                                    <i class="fas fa-flask"></i>
+                                </div>
+                                <div class="assignment-content">
+                                    <h4>Chemistry Lab Report</h4>
+                                    <p>Chemical Reactions Experiment</p>
+                                    <div class="assignment-meta">
+                                        <div class="assignment-due">Due: 2 days</div>
+                                        <div class="assignment-status status-submitted">Submitted</div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="assignment-item">
+                                <div class="assignment-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <div class="assignment-content">
+                                    <h4>English Essay</h4>
+                                    <p>Analysis of Modern Literature</p>
+                                    <div class="assignment-meta">
+                                        <div class="assignment-due">Due: 1 week</div>
+                                        <div class="assignment-status status-pending">Pending</div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="assignment-item">
+                                <div class="assignment-icon">
+                                    <i class="fas fa-globe-africa"></i>
+                                </div>
+                                <div class="assignment-content">
+                                    <h4>Geography Project</h4>
+                                    <p>Climate Change Effects</p>
+                                    <div class="assignment-meta">
+                                        <div class="assignment-due">Graded</div>
+                                        <div class="assignment-status status-graded">A-</div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="dashboard-col">
+                    <!-- Today's Timetable -->
+                    <div class="timetable-widget">
+                        <h2 class="section-title">
+                            <i class="fas fa-calendar-day"></i>
+                            Today's Schedule
+                        </h2>
+                        <ul class="timetable-list">
+                            <li class="timetable-item">
+                                <div class="time-slot">8:00 - 9:00</div>
+                                <div class="subject-info">
+                                    <h4>Mathematics</h4>
+                                    <p>Mr. Johnson</p>
+                                </div>
+                                <div class="room-number">Room 12</div>
+                            </li>
+                            <li class="timetable-item">
+                                <div class="time-slot">9:00 - 10:00</div>
+                                <div class="subject-info">
+                                    <h4>Physics</h4>
+                                    <p>Mrs. Wangari</p>
+                                </div>
+                                <div class="room-number">Lab 3</div>
+                            </li>
+                            <li class="timetable-item">
+                                <div class="time-slot">10:30 - 11:30</div>
+                                <div class="subject-info">
+                                    <h4>English</h4>
+                                    <p>Mr. Smith</p>
+                                </div>
+                                <div class="room-number">Room 8</div>
+                            </li>
+                            <li class="timetable-item">
+                                <div class="time-slot">11:30 - 12:30</div>
+                                <div class="subject-info">
+                                    <h4>Chemistry</h4>
+                                    <p>Dr. Patel</p>
+                                </div>
+                                <div class="room-number">Lab 2</div>
+                            </li>
+                            <li class="timetable-item">
+                                <div class="time-slot">2:00 - 3:00</div>
+                                <div class="subject-info">
+                                    <h4>Biology</h4>
+                                    <p>Mrs. Akinyi</p>
+                                </div>
+                                <div class="room-number">Room 15</div>
+                            </li>
+                            <li class="timetable-item">
+                                <div class="time-slot">3:00 - 4:00</div>
+                                <div class="subject-info">
+                                    <h4>History</h4>
+                                    <p>Mr. Kamau</p>
+                                </div>
+                                <div class="room-number">Room 7</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+
+        document.body.setAttribute('data-theme', currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            document.body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+            document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleSidebar);
+        sidebarOverlay.addEventListener('click', toggleSidebar);
+
+        // Close sidebar when clicking on menu items (mobile)
+        const menuItems = document.querySelectorAll('.menu-item');
+        menuItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                if (!item.href.includes('index.html')) {
+                    e.preventDefault();
+                }
+                menuItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                
+                // Close mobile menu after selection
+                if (window.innerWidth <= 768) {
+                    toggleSidebar();
+                }
+            });
+        });
+
+        // Quick Actions
+        const actionCards = document.querySelectorAll('.action-card');
+        actionCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const action = card.querySelector('h3').textContent;
+                alert(`Opening ${action}...`);
+            });
+        });
+
+        // Assignment click handlers
+        const assignmentItems = document.querySelectorAll('.assignment-item');
+        assignmentItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const assignmentName = item.querySelector('h4').textContent;
+                const status = item.querySelector('.assignment-status').textContent;
+                alert(`Assignment: ${assignmentName}\nStatus: ${status}`);
+            });
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Animate performance bars on load
+        window.addEventListener('load', () => {
+            const bars = document.querySelectorAll('.bar-fill');
+            bars.forEach(bar => {
+                const height = bar.style.height;
+                bar.style.height = '0%';
+                setTimeout(() => {
+                    bar.style.height = height;
+                }, 500);
+            });
+        });
+
+        // Simulate live data updates
+        function updateLiveData() {
+            // This would typically fetch from an API
+            const timeElements = document.querySelectorAll('.assignment-due');
+            timeElements.forEach(element => {
+                if (element.textContent.includes('Due:')) {
+                    // Simulate time updates
+                    const randomUpdate = Math.random() > 0.7;
+                    if (randomUpdate) {
+                        element.style.color = 'var(--danger)';
+                        element.style.fontWeight = '600';
+                    }
+                }
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateLiveData();
+            // Update every 30 seconds
+            setInterval(updateLiveData, 30000);
+        });
+    </script>
+</body>
+</html>
